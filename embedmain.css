@@ -105,7 +105,8 @@ a:hover {
     color: white;
     position:absolute;
     top: 0;
-	width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
 	z-index: 20;
 	display:block;
     font-size: large;

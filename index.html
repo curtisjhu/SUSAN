@@ -95,7 +95,7 @@
 			let partinfolist = infolist['myinfo'];
 			let partinfo = partinfolist[partinfolist.length-1]; //strings to contain the html code for the part info that changes on click
 			let parttitle = parttitlelist[parttitlelist.length-1]; //strings to contain the html code for the part title that changes on click
-			let zoomscreen = new THREE.Vector3(51, 30, 50); //default zooming
+			let zoomscreen = new THREE.Vector3(-64, 30, -50); //default zooming
 			let partcoordinatelist = [
 				new THREE.Vector3(23, 22, 68), // wires
 				new THREE.Vector3(25, 50, -50), // wings
@@ -206,10 +206,10 @@
 /* -------------------- SET UP MODEL VISUALS AND TEXTURE -------------------- */
 				light = new THREE.DirectionalLight(0xFFFFFF, 1); // white light, intensity
 				light.castShadow = true;
-				light.position.set(0, 1000, 500)
+				light.position.set(-100, 50, 0)
 				light.name = "light"; // so I can search by name
-				alight = new THREE.AmbientLight(0x778899, 0.6);
-				scene.add(alight);
+				alight = new THREE.AmbientLight(0x778899, 0.1);
+				// scene.add(alight);
 				scene.add(light);
 
 				// Setting up skydome
@@ -224,6 +224,7 @@
 				sky = new THREE.Mesh(skyGeo, skymaterial);
 				sky.material.side = THREE.BackSide; // sets material to the inside of the sphere instead of the outside
 				sky.name = "sky"; // so I can search by name
+				sky.rotateY(Math.PI);
 				scene.add(sky);
 
 /* -------------------- SET UP MOUSE CONTROLS AND INTERACTIONS -------------------- */
@@ -323,7 +324,6 @@
 				);
 
 				// the trasparent plane outline to show where the wires are
-				//let planeShell = new GLTFLoader(manager)
 				pln.setPath('./models/obj/')
 				.load('SUSAN_rev_Bri3.glb',
 					function (object) {
@@ -347,8 +347,6 @@
 					}
 				);
 
-				console.log(susan);
-						
 				// not sure why these are here but they're buggy if they aren't so here we are
 				createPanel(); //create the GUI
 				setupdecals(); //initialize the decal potential
@@ -537,7 +535,7 @@
 			function createPanel() {
 				panel = new GUI({ 
 					title: "Settings",
-					width: 150
+					width: 200
 				});
 				panel.domElement.id = 'gui';
 				
@@ -545,22 +543,22 @@
 					'Electrical System:': false, // start with SUSAN model showing. To edit further when adding more models
 					'Recenter Camera': resetCam, //necessary, resets camera back to reload init settings
 					'Show Info': true, // show or hide the fancy flavor text
-					'Zoom to Fit': zoomin, // zoom to fit the part when clicked
-					'change camera x': zoomscreen.x, // if someone's trackpad isn't working or they just want to adjust the angle manually
-					'change camera y': zoomscreen.y,
-					'change camera z': zoomscreen.z,
+					'Zoom into Parts': zoomin, // zoom to fit the part when clicked
+					'x': zoomscreen.x, // if someone's trackpad isn't working or they just want to adjust the angle manually
+					'y': zoomscreen.y,
+					'z': zoomscreen.z
 				};
 
 				panel.add(settings, 'Electrical System:').onChange(showModel);
 				panel.add(settings, 'Show Info').onChange(showInfo);
-				panel.add(settings, 'Zoom to Fit').onChange(function(){zoomin = !zoomin});
+				panel.add(settings, 'Zoom into Parts').onChange(function(){zoomin = !zoomin});
 				panel.add(settings, 'Recenter Camera');
 				// use trig for camera max settings? Nah just big numbers and brute force on the camera limits will do the rest
 				// goodness I love coding
-				const coords = panel.addFolder( 'Coordinates' );
-				xcontroller = coords.add(settings, 'change camera x', -300, 300, 1).listen().onChange( function(xpos){changeXCam(xpos);});
-				ycontroller = coords.add(settings, 'change camera y', -300, 300, 1).listen().onChange( function(ypos){changeYCam(ypos);});
-				zcontroller = coords.add(settings, 'change camera z', -300, 300, 1).listen().onChange( function(zpos){changeZCam(zpos);});
+				const coords = panel.addFolder( 'Cartesian Coordinates');
+				xcontroller = coords.add(settings, 'x', -100, 100).listen().onChange( function(xpos){changeXCam(xpos);});
+				ycontroller = coords.add(settings, 'y', -100, 100).listen().onChange( function(ypos){changeYCam(ypos);});
+				zcontroller = coords.add(settings, 'z', -100, 100).listen().onChange( function(zpos){changeZCam(zpos);});
 				// I actually tried tons of different textures, materials, colors, and even highlights, but nothing works as well as
 				// the colors I had originally chosen anyway
 				//colorbl = panel.add(settings, 'colorblind mode', {'normal':'normal', 'protanopia':'protanopia', 'deuteranopia':'deuteranopia','tritanopia':'tritanopia'}).onChange(function(event) {colormodechange(event)});
@@ -601,10 +599,14 @@
 			//https://discourse.threejs.org/t/camera-zoom-to-fit-object/936/2
 			// reset the camera
 			function resetCam() {
-				camera.position.set(zoomscreen.x, zoomscreen.y, zoomscreen.z);
-				camera.lookAt(0, 0, 0);
-				controls.target.set(0, 0, 0); // look at 0,0,0
-				controls.update(); // update the controls
+				if (!zoomin) {
+					camera.position.set(zoomscreen.x, zoomscreen.y, zoomscreen.z);
+					camera.lookAt(0, 0, 0);
+					// controls.target.set(0, 0, 0); // look at 0,0,0
+					// controls.update(); // update the controls
+				} else {
+					zoomintopart(partcoordinatelist.length-1);
+				}
 			}
 
 			//changes the x-value position. Goes around the plane model thanks to camera bounding.
