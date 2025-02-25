@@ -39,6 +39,7 @@
 			import { nodeFrame } from './js/jsm/renderers/webgl/nodes/WebGLNodes.js';
 			import { OrbitControls } from './js/jsm/controls/OrbitControls.js'; //movement controls
 			import { GLTFLoader } from './js/jsm/loaders/GLTFLoader.js'; //3D model loader
+			import { FBXLoader } from './js/jsm/loaders/FBXLoader.js'; // Sphere fbx loader
 			import { RoomEnvironment } from './js/jsm/environments/RoomEnvironment.js'; // background of model
 			import { GUI } from './js/jsm/libs/lil-gui.module.min.js'; // for GUI interaction
 			import { DecalGeometry } from './js/jsm/geometries/DecalGeometry.js'; // for decals
@@ -116,7 +117,7 @@
 			const mouse = new THREE.Vector2();
 			const textureLoader = new THREE.TextureLoader();
 			let decalalbedo;
-			(Math.random() > 0.5) ? decalalbedo = textureLoader.load( './models/images/GVIS_logo.png' ) : decalalbedo = textureLoader.load( './models/images/NASA_logo.png' );
+			decalalbedo = textureLoader.load( './models/images/NASA_logo.png' );
 			const decalMaterial = new THREE.MeshPhongMaterial( {
 					specular: 0xf0f0ff,
 					map: decalalbedo,
@@ -212,11 +213,13 @@
 				scene.add(light);
 
 				// Setting up skydome
-				// search for equirectangular photo
-				let skyGeo = new THREE.SphereGeometry(30000, 30, 30); // I want an enormous sphere!
+				// Search for equirectangular photo
+				let skyGeo = new THREE.SphereGeometry(100, 30, 30);
 				// photo does clip, maybe I could try to find a another one... the issue is that they're all paid :(
 				// An equirectangular photo is one that is supposed to work as a 3D sphere. 
-				let skytexture = new THREE.TextureLoader().load("./models/images/equirect3.png"); 
+				let skytexture = new THREE.TextureLoader().load("./assets/textures/HDR_ATC_Night.jpeg"); 
+
+
 				let skymaterial = new THREE.MeshBasicMaterial({ map: skytexture, color:0xFFFFFF })
 				sky = new THREE.Mesh(skyGeo, skymaterial);
 				sky.material.side = THREE.BackSide; // sets material to the inside of the sphere instead of the outside
@@ -494,7 +497,7 @@
 			function onMouseClick(event) {
 				clickedPass.selectedObjects = [];
 				// if it's on the battery settings then the model is invisible, and we don't want clicks or highlights to happen
-				if (!settings['ELECTRIC SYSTEM:']){
+				if (!settings['Electrical System:']){
 					if (intersects.length > 0) { // if the model has been clicked and not the sky	
 
 						clickedPass.selectedObjects = [intersects[0].object]; // save which part has been clicked
@@ -523,7 +526,7 @@
 					}
 				}
 				// Set the info to something different without changing the current display
-				showInfo(settings['show information']);
+				showInfo(settings['Show Info']);
 			}
 
 
@@ -532,23 +535,26 @@
 /* --------------------------------------------------------------------------------------------------------------------- */
 			//https://github.com/mrdoob/three.js/blob/master/examples/webgl_animation_skinning_blending.html
 			function createPanel() {
-				panel = new GUI({ width: 150 }, { autoPlace: false });
+				panel = new GUI({ 
+					title: "Settings",
+					width: 150
+				});
 				panel.domElement.id = 'gui';
 				
 				settings = {
-					'ELECTRIC SYSTEM:': false, // start with SUSAN model showing. To edit further when adding more models
-					'recenter camera': resetCam, //necessary, resets camera back to reload init settings
+					'Electrical System:': false, // start with SUSAN model showing. To edit further when adding more models
+					'Recenter Camera': resetCam, //necessary, resets camera back to reload init settings
+					'Show Info': true, // show or hide the fancy flavor text
+					'Zoom to Fit': zoomin, // zoom to fit the part when clicked
 					'change camera x': zoomscreen.x, // if someone's trackpad isn't working or they just want to adjust the angle manually
 					'change camera y': zoomscreen.y,
 					'change camera z': zoomscreen.z,
-					'show information': true, // show or hide the fancy flavor text
-					'zoom to fit': zoomin, // zoom to fit the part when clicked
 				};
 
-				panel.add(settings, 'ELECTRIC SYSTEM:').onChange(showModel);
-				panel.add(settings, 'show information').onChange(showInfo);
-				panel.add(settings, 'recenter camera');
-				panel.add(settings, 'zoom to fit').onChange(function(){zoomin = !zoomin});
+				panel.add(settings, 'Electrical System:').onChange(showModel);
+				panel.add(settings, 'Show Info').onChange(showInfo);
+				panel.add(settings, 'Zoom to Fit').onChange(function(){zoomin = !zoomin});
+				panel.add(settings, 'Recenter Camera');
 				// use trig for camera max settings? Nah just big numbers and brute force on the camera limits will do the rest
 				// goodness I love coding
 				const coords = panel.addFolder( 'Coordinates' );
@@ -571,7 +577,7 @@
 					parttitle = parttitlelist[parttitlelist.length - 1]; // the default sky
 					partinfo = partinfolist[partinfolist.length - 1];
 				}
-				showInfo(settings['show information']);
+				showInfo(settings['Show Info']);
 
 				planemodel.visible = visibility;
 				susan[0].visible = visibility;
