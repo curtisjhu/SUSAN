@@ -252,7 +252,6 @@ function init() {
 			susanmodel.position.set(0, 0, -20);
 			susanmodel.traverse(function (child) { //traverse the children
 				if (child.isMesh) {
-					console.log(child)
 					child.material = new THREE.MeshPhongMaterial({ 
 						reflectivity: 1, 
 						shininess: 100, 
