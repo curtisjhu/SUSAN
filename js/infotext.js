@@ -1,5 +1,5 @@
 function infotext() {
-    mytitles = [ "Electric System",
+    var mytitles = [ "Electric System",
         "Wings", 
         "Plane Fuselage",
         "Wing-Mounted Electric Engines",
@@ -11,7 +11,7 @@ function infotext() {
         "SUbsonic Single Aft eNgine (SUSAN) Aircraft"
         ]
     
-    myinfo = [
+    var myinfo = [
         // Electric system/wires
         "The tail-mounted turbofan engine provides thrust as well as the power to drive this 20 MW electric generator, which is then"+
         " transferred to the deistributed electric propulsors on the wings. The electric system also contains a gearbox, which allows"+
@@ -88,13 +88,14 @@ function infotext() {
 
     /*
     <div style="max-width: 854px; max-height: 1000px">
-	<div style="height: 850;padding-bottom: 0">
-		<iframe src="https://www.grc.nasa.gov/WWW/GVIS/%F0%9F%A7%AA/SUSAN/SUSANthumbnail.html" width="745" height="610" scrolling="no"></iframe>
-	</div>
-	<a href="https://www.grc.nasa.gov/WWW/GVIS/%F0%9F%A7%AA/SUSAN/SUSANembed.html" target="_blank">Click here for fullscreen.</a>
-</div>
+        <div style="height: 850;padding-bottom: 0">
+            <iframe src="https://www.grc.nasa.gov/WWW/GVIS/%F0%9F%A7%AA/SUSAN/SUSANthumbnail.html" width="745" height="610" scrolling="no"></iframe>
+        </div>
+        <a href="https://www.grc.nasa.gov/WWW/GVIS/%F0%9F%A7%AA/SUSAN/SUSANembed.html" target="_blank">Click here for fullscreen.</a>
+    </div>
     */
 
-    let tempdict = {mytitles, myinfo};
-    return tempdict;
+    return { "mytitles": mytitles, "myinfo": myinfo };
 }
+
+export { infotext };

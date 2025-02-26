@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* html {
+  background-image: url(https://t4.ftcdn.net/jpg/02/15/94/83/360_F_215948377_kgIhNUy4X0iYsyUfYd9KKIViSPOxclbC.jpg); 
+} */
+
+body {
+   /* background-image: url(https://t4.ftcdn.net/jpg/02/15/94/83/360_F_215948377_kgIhNUy4X0iYsyUfYd9KKIViSPOxclbC.jpg); 
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
+    color: #545454; */
+    font-family: "Helvetica Neue", sans-serif;
+    margin: auto;
+    /* 
+    font-size: 16px;
+    max-width: 1500px;
+    padding: 2em 2em 4em; */
+}
+
+br {
+    margin-bottom: 10px;
+}
+
+a {
+    color: white;
+}
+
+a:hover {
+    color: rgb(124, 193, 253);
+}
+
+#gui {
+    z-index: 80;
+}
+
+
+#SUSANmodel
+{
+    align-self: center;
+    align-content: center;
+    position: relative;
+    margin: auto;
+}
+
+
+#Nasa-logo
+{
+    position:fixed;
+    top: 100px;
+    left: 100px;
+
+}
+
+#container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+#loading {
+    color: white;
+    position: absolute;
+	top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    display: block;
+    text-align: center;
+    background-color: rgb(111, 165, 209);
+    opacity: 1;
+}
+
+#percentagebar{
+    position: absolute;
+    z-index: 105;
+    width: 100px;
+    height: 3px;
+    background-color:white;
+    display:block;
+    top: 50vh;
+    left:0;
+}
+
+#loadingscreen{
+    text-align: center;
+    position: absolute;
+    z-index: 104;
+    display:block;
+    top: 40vh;
+    width: 100%;
+}
+
+
+/* For fullscreen */
+.infotext {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#partinfobackground {
+    position: absolute;
+	bottom: 0;
+	width: 100%;
+	z-index: 20;
+	display:block;
+}
+
+#infotitle {    
+    color: white;
+    position:absolute;
+    top: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+	z-index: 20;
+	display:block;
+    font-size: large;
+    text-align: center;
+
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+#partinfo {
+    color: white;
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-top:20px;
+    margin-bottom:20px;
+    font-weight: 200;
+    font-size: large;
+    text-align: left;
+
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+#expandbutton {
+    background-color:rgb(111, 165, 209);
+    color:black;
+    font-weight:bold;
+    border-color: white;
+    text-align: center;
+}
