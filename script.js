@@ -86,7 +86,7 @@ const intersection = {
 const mouse = new THREE.Vector2();
 const textureLoader = new THREE.TextureLoader();
 let decalalbedo;
-decalalbedo = textureLoader.load( './models/images/NASA_logo.png' );
+decalalbedo = textureLoader.load( 'models/images/NASA_logo.png' );
 const decalMaterial = new THREE.MeshPhongMaterial( {
 		specular: 0xf0f0ff,
 		map: decalalbedo,
@@ -243,11 +243,9 @@ function init() {
 	}
 
 
-	let plane = new GLTFLoader(manager)
-	.setPath('./models/obj/')
-	.load('SUSAN_rev_Bri3.glb',
+	let plane = new GLTFLoader(manager);
+	plane.load('models/obj/SUSAN_rev_Bri3.glb',
 		function (object) {
-			let mattemp;
 			susanmodel = object.scene;
 			susanmodel.position.set(0, 0, -20);
 			susanmodel.traverse(function (child) { //traverse the children
@@ -275,7 +273,8 @@ function init() {
 
 	const pln = new GLTFLoader(manager);
 	// load in wire system
-	pln.load('./models/obj/wire_system3.glb',
+	pln.setPath("models/obj/")
+		.load("wire_system3.glb",
 		function (object) {
 			let mattemp;
 			object.scene.rotateY(Math.PI); //for some reason it loads in 180 degrees in the wrong direction so rotate it back around
@@ -300,8 +299,8 @@ function init() {
 	);
 
 	// the trasparent plane outline to show where the wires are
-	pln.setPath('./models/obj/')
-	.load('SUSAN_rev_Bri3.glb',
+	pln.setRequestHeader({ mode: "no-cors" });
+	pln.load('SUSAN_rev_Bri3.glb',
 		function (object) {
 			let mattemp;
 			planemodel = object.scene;
