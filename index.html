@@ -38,8 +38,10 @@
 			import * as THREE from './js/build/three.module.js';
 			import { nodeFrame } from './js/jsm/renderers/webgl/nodes/WebGLNodes.js';
 			import { OrbitControls } from './js/jsm/controls/OrbitControls.js'; //movement controls
+
 			import { GLTFLoader } from './js/jsm/loaders/GLTFLoader.js'; //3D model loader
 			import { FBXLoader } from './js/jsm/loaders/FBXLoader.js'; // Sphere fbx loader
+
 			import { RoomEnvironment } from './js/jsm/environments/RoomEnvironment.js'; // background of model
 			import { GUI } from './js/jsm/libs/lil-gui.module.min.js'; // for GUI interaction
 			import { DecalGeometry } from './js/jsm/geometries/DecalGeometry.js'; // for decals
@@ -70,19 +72,21 @@
 			let panelratio = 1; // percentage size of the window that the animation is
 			let windowwidth = window.innerWidth * panelratio;
 			let windowheight = window.innerHeight * panelratio;
+
 			if (windowwidth > 800){
 				document.getElementById("partinfo").style.fontSize = "large";
 				document.getElementById("partinfo").style.fontWeight = "normal";
 				document.getElementById("infotitle").style.fontSize = "large";
 			} else if (windowwidth > 500 && windowwidth < 800){
 				document.getElementById("partinfo").style.fontSize = "medium";
-				document.getElementById("partinfo").style.fontWeight = "bold";
+				document.getElementById("partinfo").style.fontWeight = "normal";
 				document.getElementById("infotitle").style.fontSize = "medium";
 			} else {
 				document.getElementById("partinfo").style.fontSize = "small";
-				document.getElementById("partinfo").style.fontWeight = "bold";
+				document.getElementById("partinfo").style.fontWeight = "normal";
 				document.getElementById("infotitle").style.fontSize = "small";
 			}
+
 
 			
 			//set up mouse over (raycaster)
@@ -208,8 +212,8 @@
 				light.castShadow = true;
 				light.position.set(-100, 50, 0)
 				light.name = "light"; // so I can search by name
-				alight = new THREE.AmbientLight(0x778899, 0.1);
-				// scene.add(alight);
+				alight = new THREE.AmbientLight(0x778899, 0.4);
+				scene.add(alight);
 				scene.add(light);
 
 				// Setting up skydome
@@ -231,8 +235,8 @@
 				// set up controls
 				controls = new OrbitControls(camera, renderer.domElement);
 				controls.enableDamping = true; //smooth the controls
-				controls.minDistance = 30; // most zoomed in
-				controls.maxDistance = 300; // most zoomed out
+				controls.minDistance = 22; // most zoomed in
+				controls.maxDistance = 70; // most zoomed out
 				controls.target.set(0, 0, 0); // look at 0,0,0
 				controls.update(); // update the controls
 
@@ -283,8 +287,17 @@
 						susanmodel.position.set(0, 0, -20);
 						susanmodel.traverse(function (child) { //traverse the children
 							if (child.isMesh) {
+								console.log(child)
+								child.material = new THREE.MeshPhongMaterial({ 
+									reflectivity: 1, 
+									shininess: 100, 
+									map: child.material.map,
+									specular: "#f0b2b2",
+									side: THREE.DoubleSide
+								});
 								child.receiveShadow = true;
 								child.castShadow = true;
+
 								susan.push(child);
 							}
 						});
@@ -309,7 +322,6 @@
 								child.material = mattemp;
 								child.receiveShadow = true;
 								child.castShadow = true;
-								child.shadowSide = THREE.DoubleSide;
 								
 								child.name = 'wires';
 								susan.push(child);

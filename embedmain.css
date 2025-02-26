@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 /* html {
   background-image: url(https://t4.ftcdn.net/jpg/02/15/94/83/360_F_215948377_kgIhNUy4X0iYsyUfYd9KKIViSPOxclbC.jpg); 
 } */
@@ -111,6 +113,11 @@ a:hover {
 	display:block;
     font-size: large;
     text-align: center;
+
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
 }
 
 #partinfo {
@@ -122,6 +129,11 @@ a:hover {
     font-weight: 200;
     font-size: large;
     text-align: left;
+
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }
 
 #expandbutton {
